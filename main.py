@@ -24,7 +24,7 @@ def generateQr(url):
     timestamp = int(time.time())
     img_filename = f'qrcode_{timestamp}'
 
-    img_path = os.path.join(IMG_FOLDER, img_filenames)  # Nombre fijo, puedes cambiarlo
+    img_path = os.path.join(IMG_FOLDER, img_filename)  # Nombre fijo, puedes cambiarlo
     img.save(img_path)
 
     return img_path
