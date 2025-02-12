@@ -1,5 +1,6 @@
 from flask import Flask, render_template, send_from_directory, request
 import os
+import time
 import qrcode
 
 
@@ -20,7 +21,10 @@ def generateQr(url):
 
     img = qr.make_image()
 
-    img_path = os.path.join(IMG_FOLDER, 'qr_code.jpg')  # Nombre fijo, puedes cambiarlo
+    timestamp = int(time.time())
+    img_filename = f'qrcode_{timestamp}'
+
+    img_path = os.path.join(IMG_FOLDER, img_filenames)  # Nombre fijo, puedes cambiarlo
     img.save(img_path)
 
     return img_path
