@@ -16,7 +16,7 @@ qr = qrcode.QRCode(
 )
 os.makedirs(IMG_FOLDER, exist_ok=True)
 
-def eliminate_qrs():
+def clean_qrs():
     now = time.time
 
     for filename in os.listdir(IMG_FOLDER):
@@ -39,11 +39,13 @@ def generateQr(url):
 
     return img_filename  # Devuelve solo el nombre de la imagen
 
+
+
 @app.route("/", methods=['GET', 'POST'] )
 def home():
+    clean_qrs()
 
     qr_filename = None
-
     if request.method == 'POST':
         #download_file( request.form.get('url') )
         url = request.form.get('url')
