@@ -16,6 +16,18 @@ qr = qrcode.QRCode(
 )
 os.makedirs(IMG_FOLDER, exist_ok=True)
 
+def eliminate_qrs():
+    now = time.time
+
+    for filename in os.listdir(IMG_FOLDER):
+        filepath = os.path.join(IMG_FOLDER,filename)
+
+        if os.path.isfile(filepath):
+            creationtime = os.path.getctime(filepath)
+
+            if (now - creationtime) > 3600:
+                os.remove(filepath)
+
 
 def generateQr(url):
     timestamp = int(time.time())  # Genera un número único basado en el tiempo
