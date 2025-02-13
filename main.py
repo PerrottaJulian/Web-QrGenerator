@@ -14,42 +14,44 @@ qr = qrcode.QRCode(
     box_size=10,
     border=2.5
 )
+os.makedirs(IMG_FOLDER, exist_ok=True)
+
 
 def generateQr(url):
-    qr.add_data(url)
-    qr.make(fit=True)
+    timestamp = int(time.time())  # Genera un número único basado en el tiempo
+    img_filename = f'qr_{timestamp}.jpg'  # Crea un nombre único
+    
+    img_path = os.path.join(IMG_FOLDER, img_filename)
+    qr = qrcode.make(url)
+    qr.save(img_path)
 
-    img = qr.make_image()
-
-    timestamp = int(time.time())
-    img_filename = f'qrcode_{timestamp}'
-
-    img_path = os.path.join(IMG_FOLDER, img_filename)  # Nombre fijo, puedes cambiarlo
-    img.save(img_path)
-
-    return img_path
-
+    return img_filename  # Devuelve solo el nombre de la imagen
 
 @app.route("/", methods=['GET', 'POST'] )
 def home():
+
+    qr_filename = None
+
     if request.method == 'POST':
         #download_file( request.form.get('url') )
         url = request.form.get('url')
+
         if url:
-            generateQr(url)
+            qr_filename = generateQr(url)
+
             return f'''
-                <img src="/static/images/qr_code.jpg" alt="QR Code">
+                <img src="/static/images/{qr_filename}" alt="QR Code">
                 <br>
                 <a href="/download">Descargar QR</a>
             '''
 
-    return render_template("index.html")
+    return render_template("index.html", qr_filename=qr_filename)
 
-@app.route('/download')
-def download_file():
+@app.route('/download/<filename>')
+def download_file(filename):
     return send_from_directory(
         IMG_FOLDER,
-        'qr_code.jpg',
+        filename,
         as_attachment=True,  # Esto es lo que forzará la descarga
         mimetype='image/jpeg'  # Asegúrate de usar el tipo MIME adecuado para tu imagen
     )
