@@ -17,16 +17,16 @@ qr = qrcode.QRCode(
 os.makedirs(IMG_FOLDER, exist_ok=True)
 
 def clean_qrs():
-    now = time.time
+    now = time.time()
 
     for filename in os.listdir(IMG_FOLDER):
-        filepath = os.path.join(IMG_FOLDER,filename)
+        file_path = os.path.join(IMG_FOLDER,filename)
 
-        if os.path.isfile(filepath):
-            creationtime = os.path.getctime(filepath)
-
-            if (now - creationtime) > 3600:
-                os.remove(filepath)
+        if os.path.isfile(file_path):
+            #creationtime = os.path.getctime(filepath)
+            creation_time = os.path.getctime(file_path)
+            if (now - creation_time) > 3600:
+                os.remove(file_path)
 
 
 def generateQr(url):
