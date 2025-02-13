@@ -56,7 +56,7 @@ def home():
             return f'''
                 <img src="/static/images/{qr_filename}" alt="QR Code">
                 <br>
-                <a href="/download">Descargar QR</a>
+                <a href="/download/{qr_filename}"> Descargar QR </a>
             '''
 
     return render_template("index.html", qr_filename=qr_filename)
